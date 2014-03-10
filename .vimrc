@@ -110,6 +110,13 @@ nnoremap <silent> <M-Right> >>
 vnoremap <silent> <M-Left> <gv
 vnoremap <silent> <M-Right> >gv
 
+" Move visual blocks and lines with movement keys (h j k l or SHIFTed arrowkeys)
+runtime plugin/dragvisuals.vim
+vnoremap <expr>   <S-Left>  DVB_Drag('left')
+vnoremap <expr>   <S-Right> DVB_Drag('right')
+vnoremap <expr>   <S-Down>  DVB_Drag('down')
+vnoremap <expr>   <S-Up>    DVB_Drag('up')
+
 
 " Fix home and end keybindings for screen, particularly on mac
 " - for some reason this fixes the arrow keys too. huh.
