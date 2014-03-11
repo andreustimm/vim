@@ -1,24 +1,18 @@
-set nocompatible        " Must be first line
-set showmatch    "mostra caracteres ( { [ quando fechados
-set textwidth=80 "largura do texto
-set nowrap       "sem wrap (quebra de linha)
-set mouse=a      "habilita todas as acoes do mouse
-set nu           "numeracao de linhas
-set ts=4         "Seta onde o tab para
-set sw=4         "largura do tab
-set et           "espacos em vez de tab
-set expandtab                   " Tabs are spaces, not tabs
-set softtabstop=4               " Let backspace delete indent
-set ai           "auto incrementa
-set ic           "ignore case
-set hls          "marca selecao busca
-set incsearch
+set nocompatible  " Must be first line
+set textwidth=80  " largura do texto
+set nowrap        " sem wrap (quebra de linha)
+set mouse=a       " habilita todas as acoes do mouse
+set ts=4          " Seta onde o tab para
+set sw=4          " largura do tab
+set et            " espacos em vez de tab
+set softtabstop=4 " Let backspace delete indent
+set expandtab     " Tabs are spaces, not tabs
+set ai            " auto incrementa
 set magic
 set bs=indent,eol,start
 set laststatus=1
+
 syntax on        "syntax highlight
-set list
-set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
 color elflord
 
 " Sets CursorLine color to a smooth background, no underline
@@ -71,9 +65,9 @@ endif
 set backspace=indent,eol,start  " Backspace for dummies
 set linespace=0                 " No extra spaces between rows
 set nu                          " Line numbers on
-set showmatch                   " Show matching brackets/parenthesis
+set showmatch                   " mostra caracteres ( { [ quando fechados
 set incsearch                   " Find as you type search
-set hlsearch                    " Highlight search terms
+set hls                         " marca selecao busca
 set winminheight=0              " Windows can be 0 line high
 set ignorecase                  " Case insensitive search
 set smartcase                   " Case sensitive when uc present
@@ -85,6 +79,9 @@ set scrolloff=2                 " Minimum lines to keep above and below cursor
 set foldenable                  " Auto fold code
 set list
 set listchars=tab:›\ ,trail:•,extends:#,nbsp:. " Highlight problematic whitespace
+
+" Útil quando for colar código "de fora":
+set pastetoggle=<F12>           " pastetoggle (sane indentation on pastes)
 
 " Stupid shift key fixes
 if has("user_commands")
@@ -102,6 +99,24 @@ endif
 " Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
+
+" Mover linhas na vertical               ALT/META + Up/Down
+nnoremap <silent> <M-Up> ddkP
+nnoremap <silent> <M-Down> ddp
+
+" De-Indent a line or a selected lines   ALT/META + cursors
+nnoremap <silent> <M-Left> <<
+nnoremap <silent> <M-Right> >>
+vnoremap <silent> <M-Left> <gv
+vnoremap <silent> <M-Right> >gv
+
+" Move visual blocks and lines with movement keys (h j k l or SHIFTed arrowkeys)
+runtime plugin/dragvisuals.vim
+vnoremap <expr>   <S-Left>  DVB_Drag('left')
+vnoremap <expr>   <S-Right> DVB_Drag('right')
+vnoremap <expr>   <S-Down>  DVB_Drag('down')
+vnoremap <expr>   <S-Up>    DVB_Drag('up')
+
 
 " Fix home and end keybindings for screen, particularly on mac
 " - for some reason this fixes the arrow keys too. huh.
@@ -184,6 +199,17 @@ imap [H g0
     endfunction
     " }
 
+    " Format SGML file {
+        function! FormatXML()
+            exec ':%s/<\/\(\w\+\)>/<\/\1>\r/g|:%s/></>\r</g|:normal 2G=it'
+        endfunction
+        nnoremap <silent> <leader>X :call FormatXML()<CR>
+        " De-format SGML file (minifies)
+        nnoremap <silent> <leader>x :%s/>\n\s*</></g
+    " }
+
+    " <LEADER>o - Opens current file's directory on a new filesystem browser tab
+    noremap <silent><Leader>o :tabe %:p:h<CR>
 
     filetype plugin indent on   " Automatically detect file types.
 
