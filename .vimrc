@@ -101,8 +101,8 @@ vnoremap < <gv
 vnoremap > >gv
 
 " Mover linhas na vertical               ALT/META + Up/Down
-nnoremap <silent> <M-Up> ddkP
-nnoremap <silent> <M-Down> ddp
+nnoremap <silent> <M-Up> :m-2<CR>
+nnoremap <silent> <M-Down> :m+1<CR>
 
 " De-Indent a line or a selected lines   ALT/META + cursors
 nnoremap <silent> <M-Left> <<
